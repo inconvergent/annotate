@@ -1,0 +1,13 @@
+*.png
+*.svg
+res
+
+*.csv
+annotate.csv
+
+datasets/*
+datasets/*/*
+
+__pycache__
+*.pyc
+

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://gmpg.org/xfn/11" rel="profile" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Annotate</title>
+<style>
+main, body, html {
+  padding: 0px;
+  margin: 0px;
+}
+
+html{
+  font-family: "helvetica", sans-serif;
+  color: #DDD;
+  height: 100%;
+  background-color: black;
+  padding: 0px;
+  margin: 0px;
+}
+
+a, a:hover, a:visited{
+  color: white;
+  text-decoration: none;
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.buttons{
+  width: 100%;
+  height: 40px;
+  padding 10px;
+}
+
+.button{
+  float: left;
+  display: block;
+  width: 30%;
+  height: 100%;
+  padding: 5px;
+  font-size: 30px;
+  opacity: 0.5;
+}
+
+.left{
+  text-align: center;
+  float: left;
+}
+
+.right{
+  text-align: center;
+  float: right;
+}
+
+.red{
+  background-color: #C1006D;
+}
+
+.green{
+  background-color: #077;
+}
+
+.item{
+  text-align: center;
+  min-height: 90%;
+  padding: 10px;
+  padding-top: 20%;
+  padding-bottom: 20%;
+}
+
+img{
+  border: 4px #444 solid;
+}
+
+.content{
+  padding: 10px;
+  display:block;
+  overflow: auto;
+}
+</style>
+</head>
+<body>
+<div class="content">
+  <div>data folder: {{ data }}</div>
+  <div>annotator: {{ annotator }}</div>
+  <div># items: {{ nitems }}</div>
+  <div>name: {{ name }}</div>
+  <div class="item">
+    <img src="static/{{ name }}" height="{{ size }}px"
+                                 width="{{ size }}px">
+  </div>
+</div>
+<div class="buttons">
+  <div class="button left red"><a href="reject/{{ name }}">reject</a></div>
+  <div class="button right green"><a href="accept/{{ name }}">accept</a></div>
+</div>
+<script>
+document.onkeydown = checkKey;
+function checkKey(e) {
+  e = e || window.event;
+  if (e.keyCode == '38') {// ↑
+  }
+  else if (e.keyCode == '40') {// ↓
+  }
+  else if (e.keyCode == '37') {// ←
+    window.location.href = 'reject/{{ name }}';
+  }
+  else if (e.keyCode == '39') {// →
+    window.location.href = 'accept/{{ name }}';
+  }
+}
+</script>
+</body>
+</html>
+
