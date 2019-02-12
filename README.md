@@ -6,6 +6,6 @@ run with:
 
     DATA='./data/path' \
     IMG='svg' \
-    ANNOTATOR=yourname \
+    CSVNAME=annotatorname \
     ./www.py
 

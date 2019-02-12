@@ -19,7 +19,7 @@ log.setLevel(logging.ERROR)
 DATA = Path(str(getenv('DATA', None)))
 DEBUG = bool(getenv('DEBUG', False))
 
-ANNOTATOR = getenv('ANNOTATOR', None)
+CSVNAME = getenv('CSVNAME', None)
 IMG = getenv('IMG', 'svg')
 SIZE = str(getenv('SIZE', '400'))
 
@@ -28,7 +28,7 @@ PORT = int(getenv('PORT', 8000))
 HEADERS = {'Cache-Control': 'no-cache', 'Access-Control-Allow-Origin': '*'}
 
 
-assert ANNOTATOR is not None and ANNOTATOR != 'name', 'use ANNOTATOR env var to set your name.'
+assert CSVNAME is not None, 'use CSVNAME env var to set name of output csv.'
 assert DATA is not None, 'use DATA env var to set data set folder.'
 
 
@@ -38,16 +38,23 @@ app.config.update(DEBUG=DEBUG)
 
 
 print('data folder: {:s}'.format(str(DATA)))
-print('annotator: {:s}'.format(ANNOTATOR))
+print('csv name: {:s}'.format(CSVNAME))
 
 
-with Annogen(DATA, annotator=ANNOTATOR, imgtype=IMG) as ag:
+with Annogen(DATA, csvname=CSVNAME, imgtype=IMG) as ag:
 
   @app.route('/accept/<string:name>', methods=['GET'])
   def accept(name):
     print('--')
     ag.annotate(name, 'xaccept')
     print('accepted: {:s}'.format(name))
+    return render_template('redirect.html', url='/')
+
+  @app.route('/inter/<string:name>', methods=['GET'])
+  def inter(name):
+    print('--')
+    ag.annotate(name, 'xinter')
+    print('inter: {:s}'.format(name))
     return render_template('redirect.html', url='/')
 
   @app.route('/reject/<string:name>', methods=['GET'])
@@ -70,7 +77,7 @@ with Annogen(DATA, annotator=ANNOTATOR, imgtype=IMG) as ag:
     return render_template(
         'index.html',
         name=next(ag),
-        annotator=ANNOTATOR,
+        csvname=CSVNAME,
         data=str(DATA),
         size=SIZE,
         nitems=num)

@@ -28,30 +28,24 @@ a, a:hover, a:visited{
   width: 100%;
 }
 
-.buttons{
+.menu{
   width: 100%;
-  height: 40px;
-  padding 10px;
+  height: 50px;
+  padding 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .button{
-  float: left;
-  display: block;
+  display: inline;
+  min-width: 90px;
   width: 30%;
   height: 100%;
   padding: 5px;
   font-size: 30px;
   opacity: 0.5;
-}
-
-.left{
   text-align: center;
-  float: left;
-}
-
-.right{
-  text-align: center;
-  float: right;
 }
 
 .red{
@@ -62,12 +56,19 @@ a, a:hover, a:visited{
   background-color: #077;
 }
 
+.blue{
+  background-color: #6dc9e0;
+}
+
 .item{
   text-align: center;
   min-height: 90%;
   padding: 10px;
-  padding-top: 20%;
-  padding-bottom: 20%;
+  padding-top: 7%;
+  padding-bottom: 7%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 img{
@@ -84,7 +85,7 @@ img{
 <body>
 <div class="content">
   <div>data folder: {{ data }}</div>
-  <div>annotator: {{ annotator }}</div>
+  <div>csvname: {{ csvname }}</div>
   <div># items: {{ nitems }}</div>
   <div>name: {{ name }}</div>
   <div class="item">
@@ -92,9 +93,10 @@ img{
                                  width="{{ size }}px">
   </div>
 </div>
-<div class="buttons">
-  <div class="button left red"><a href="reject/{{ name }}">reject</a></div>
-  <div class="button right green"><a href="accept/{{ name }}">accept</a></div>
+<div class="menu">
+    <div class="button red"><a href="reject/{{ name }}">reject</a></div>
+    <div class="button blue"><a href="inter/{{ name }}">inter</a></div>
+    <div class="button green"><a href="accept/{{ name }}">accept</a></div>
 </div>
 <script>
 document.onkeydown = checkKey;
@@ -103,6 +105,9 @@ function checkKey(e) {
   if (e.keyCode == '38') {// ↑
   }
   else if (e.keyCode == '40') {// ↓
+    window.location.href = 'inter/{{ name }}';
+  }
+  else if (e.keyCode == '32') {// (space)
   }
   else if (e.keyCode == '37') {// ←
     window.location.href = 'reject/{{ name }}';

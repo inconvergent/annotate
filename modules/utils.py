@@ -23,27 +23,23 @@ def get_file_name(f):
 def csv_file_name(line):
   return line.split(';')[0]
 
-def csv_annotator(line):
-  return line.split(';')[1]
 
-
-def get_non_annotated(path, files, annotator_name):
+def get_non_annotated(path, files):
   files = sorted([get_file_name(fn) for fn in files])
   try:
     with open(str(path), 'r') as f:
-      ann_tuple = set([(csv_file_name(line), csv_annotator(line))
-                       for line in f.readlines()])
-      return filter(lambda fn: (fn, annotator_name) not in ann_tuple, files)
+      ann_tuple = set([csv_file_name(line) for line in f.readlines()])
+      return filter(lambda fn: fn not in ann_tuple, files)
   except FileNotFoundError:
     return files
 
 
 class Annogen():
-  def __init__(self, data, annotator, imgtype='svg'):
-    csv_path = data.joinpath('annotate.csv')
+  def __init__(self, data, csvname, imgtype='svg'):
+    csv_path = data.joinpath('{:s}.csv'.format(csvname))
     self.data = list(get_non_annotated(
-        csv_path, data.glob('*.{:s}'.format(imgtype)), annotator))
-    self.annotator = annotator
+        csv_path, data.glob('*.{:s}'.format(imgtype))))
+    self.csvname = csvname
 
     self.csv = open(str(csv_path), 'a+')
     self.i = 0
@@ -63,8 +59,7 @@ class Annogen():
     return self.n - self.i
 
   def annotate(self, fn, status):
-    self.csv.write(';'.join([str(s) for s in
-                             [fn, self.annotator, status]]) + '\n')
+    self.csv.write(';'.join([str(s) for s in [fn, status]]) + '\n')
     self.csv.flush()
     self.i += 1
 
